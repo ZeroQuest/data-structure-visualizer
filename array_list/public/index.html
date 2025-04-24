@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ArrayList Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>ArrayList Visualizer</h1>
+
+  <form id="add-form">
+    <input type="number" id="value-input" placeholder="Enter value" required />
+    <button type="submit">Add</button>
+  </form>
+
+  <form id="insert-form">
+    <input type="number" id="insert-index" placeholder="Index" required>
+    <input type="number" id="insert-value" placeholder="Value" required>
+    <button type="submit">Insert</button>
+  </form>
+
+  <form id="remove-form">
+    <input type="number" id="remove-index" placeholder="Index" required>
+    <button type="submit">Remove</button>
+  </form>
+
+  <form id="search-form">
+    <input type="number" id="search-value" placeholder="Search Value">
+    <button type="submit">Search</button>
+  </form>
+  <div id="search-result"></div>
+
+  <form id="set-form">
+    <input type="number" id="set-index" placeholder="Index">
+    <input type="number" id="set-value" placeholder="New Value">
+    <button type="submit">Set</button>
+  </form>
+
+  <button id="shrink-button">Shrink to Fit</button>
+
+  <button id="clear-button">Clear</button>
+
+  <p><strong>Size:</strong> <span id="size">0</span> |
+    <strong>Capacity:</strong> <span id="capacity">0</span></p>
+
+  <div id="array-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+</body> 
+  </script>
