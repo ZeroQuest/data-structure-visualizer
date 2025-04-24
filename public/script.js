@@ -1,8 +1,8 @@
 const add_form = document.getElementById('add-form');
 const input = document.getElementById('value-input');
 const container = document.getElementById('array-container');
-const sizeSpan = document.getElementById('size');
-const capacitySpan = document.getElementById('capacity');
+const sizeSpan = document.getElementById('size-value');
+const capacitySpan = document.getElementById('capacity-value');
 const insert_form = document.getElementById('insert-form');
 const remove_form = document.getElementById('remove-form');
 const clear = document.getElementById('clear-button');
@@ -11,86 +11,125 @@ const set_form = document.getElementById('set-form');
 const shrink_button = document.getElementById('shrink-button');
 
 
+
 add_form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const value = input.value;
-  if(!value) return;
-  await fetch(`/add/${value}`);
-  input.value = '';
-  await loadData();
+  const form = e.target;
+  const value = form['value-input'].value;
+  if (!value) return;
+
+  try {
+    const res = await fetch(`/add/${value}`);
+    if (!res.ok) throw new Error("Server rejected add");
+
+    form.reset();
+    await loadData();
+  } catch (err) {
+    alert("Error adding value.");
+  }
 });
 
 insert_form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const index = document.getElementById('insert-index').value;
-  const value = document.getElementById('insert-value').value;
-  if (!value || index < 0) return;
+  const form = e.target;
+  const index = form['insert-index'].value;
+  const value = form['insert-value'].value;
 
-  const res = await fetch(`/insert/${index}/${value}`);
-  if (res.ok) {
+  try {
+    const res = await fetch(`/insert/${index}/${value}`);
+    if (!res.ok) throw new Error("Server rejected insert");
+
+    form.reset();
     await loadData();
-  } else {
+  } catch (err) {
     alert("Invalid index for insert.");
   }
-
-  index.value = '';
-  value.value = '';
 });
 
 remove_form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const index = document.getElementById('remove-index').value;
-  const res = await fetch(`/remove/${index}`);
-  if (res.ok) {
+  const form = e.target;
+  const index = form['remove-index'].value;
+
+  try {
+    const res = await fetch(`/remove/${index}`);
+    if (!res.ok) throw new Error("Server rejected removal");
+
+    form.reset();
     await loadData();
-  } else {
+  } catch (err) {
     alert("Invalid index for removal.");
   }
-  index.value = '';
 });
 
 search_form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const val = document.getElementById('search-value').value;
-  const containsRes = await fetch(`/contains/${val}`);
-  const indexRes = await fetch(`/indexof/${val}`);
-  const contains = await containsRes.text();
-  const index = await indexRes.text();
-  document.getElementById('search-result').textContent =
-    contains == "true"
-      ? `Found at index ${index}`
-      : "Not found in list";
+  const form = e.target;
+  const value = form['search-value'].value;
 
-  val.value = '';
+  try {
+    const containsRes = await fetch(`/contains/${value}`);
+    const indexRes = await fetch(`/indexof/${value}`);
+    const contains = await containsRes.text();
+    const index = await indexRes.text();
+
+    document.getElementById('search-result').textContent =
+      contains === "true" ? `Found at index ${index}` : "Not found in list";
+
+    form.reset();
+  } catch (err) {
+    alert("Error while searching.");
+  }
 });
 
 set_form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const index = document.getElementById('set-index').value;
-  const value = document.getElementById('set-value').value;
-  const res = await fetch(`/set/${index}/${value}`);
- 
-  index.value = '';
-  value.value = '';
+  const form = e.target;
+  const index = form['set-index'].value;
+  const value = form['set-value'].value;
 
-  if (res.ok) {
+  try {
+    const res = await fetch(`/set/${index}/${value}`);
+    if (!res.ok) throw new Error("Server rejected set");
+
+    form.reset();
     await loadData();
-  } else {
-    alert("Invalid index");
+  } catch (err) {
+    alert("Invalid index for set.");
   }
-
-  
 });
 
-shrink_button.addEventListener('click', async (e) => {
-  await fetch('/shrink');
-  await loadData();
+shrink_button.addEventListener('click', async () => {
+  try {
+    const res = await fetch('/shrink');
+    if (!res.ok) throw new Error("Server rejected shrink");
+
+    await loadData();
+  } catch (err) {
+    alert("Error during shrink operation.");
+  }
 });
 
-clear.addEventListener('click', async (e) => {
-  await fetch('/clear');
-  await loadData();
+clear.addEventListener('click', async () => {
+  try {
+    const res = await fetch('/clear');
+    if (!res.ok) throw new Error("Server rejected clear");
+
+    await loadData();
+  } catch (err) {
+    alert("Error clearing the list.");
+  }
 });
+
+
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('toggle-btn');
+
+toggleBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '⮞' : '⮜';
+});
+
 
 function updateView(data) {
   container.innerHTML = "";
