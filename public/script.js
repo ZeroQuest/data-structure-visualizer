@@ -130,22 +130,46 @@ toggleBtn.addEventListener('click', () => {
   toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '⮞' : '⮜';
 });
 
-
 function updateView(data) {
   container.innerHTML = "";
   const { size, capacity, values } = data;
 
+  const baseAddress = 0x1000;
+  const addressStride = 4;
+
   for (let i = 0; i < capacity; i++) {
     const div = document.createElement("div");
     div.className = "box";
+
+    // Address 
+    const address = document.createElement("div");
+    address.className = "address";
+    address.textContent = `0x${(baseAddress + i * addressStride).toString(16)}`;
+
+    // Value (empty if not in use)
+    const valueElem = document.createElement("div");
+    valueElem.className = "value";
     if (i < size) {
-      div.textContent = values[i];
-      div.style.backgroundColor = "#cce5ff";
+      valueElem.textContent = values[i];
+      div.style.backgroundColor = "#66aaff";
     } else {
-      div.style.backgroundColor = "#eee"
+      valueElem.textContent = "";
+      div.style.backgroundColor = "#eee";
     }
+
+    // Index 
+    const indexElem = document.createElement("div");
+    indexElem.className = "index";
+    indexElem.textContent = `Index: ${i}`;
+
+    // Append to box
+    div.appendChild(address);
+    div.appendChild(valueElem);
+    div.appendChild(indexElem);
+
     container.appendChild(div);
   }
+
 }
 
 async function loadData() {
