@@ -1,11 +1,13 @@
 #include "crow_all.h"
 #include "array_list.hpp"
+#include "linked_list.hpp"
 #include <sstream>
 #include <fstream>
 #include <stdexcept>
 #include <string>
 
 ArrayList arrayList;
+LinkedList<int> linkedList;
 
 bool ends_with(const std::string& str, const std::string& suffix) {
   return str.size() >= suffix.size() &&
@@ -16,13 +18,15 @@ bool ends_with(const std::string& str, const std::string& suffix) {
 int main() {
   crow::SimpleApp app;
 
-  CROW_ROUTE(app, "/add/<int>")
+  // ====== Array List Routing ======
+
+  CROW_ROUTE(app, "/arraylist/add/<int>")
   ([](int value) {
     arrayList.add(value);
     return crow::response("Added " + std::to_string(value));
   });
 
-  CROW_ROUTE(app, "/data")
+  CROW_ROUTE(app, "/arraylist/data")
   ([](){
     auto vec = arrayList.toVector();
     crow::json::wvalue result;
@@ -37,7 +41,7 @@ int main() {
     return crow::response(result);
   });
 
-  CROW_ROUTE(app, "/insert/<int>/<int>")
+  CROW_ROUTE(app, "/arraylist/insert/<int>/<int>")
   ([](int index, int value){
     try {
       arrayList.insert(index, value);
@@ -47,7 +51,7 @@ int main() {
     }
   });
 
-  CROW_ROUTE(app, "/remove/<int>")
+  CROW_ROUTE(app, "/arraylist/remove/<int>")
   ([](int index){
     try {
       arrayList.remove(index);
@@ -57,17 +61,17 @@ int main() {
     }
   });
 
-  CROW_ROUTE(app, "/contains/<int>")
+  CROW_ROUTE(app, "/arraylist/contains/<int>")
   ([](int value){
     return crow::response(arrayList.contains(value) ? "true" : "false");
   });
 
-  CROW_ROUTE(app, "/indexof/<int>")
+  CROW_ROUTE(app, "/arraylist/indexof/<int>")
   ([](int value){
     return crow::response(std::to_string(arrayList.indexOf(value)));
   });
 
-  CROW_ROUTE(app, "/set/<int>/<int>")
+  CROW_ROUTE(app, "/arraylist/set/<int>/<int>")
   ([](int index, int value){
     try {
       arrayList.set(index, value);
@@ -77,17 +81,77 @@ int main() {
     }
   });
 
-  CROW_ROUTE(app, "/shrink")
+  CROW_ROUTE(app, "/arraylist/shrink")
   ([](){
     arrayList.shrinkToFit();
     return crow::response(200);
   });
 
-  CROW_ROUTE(app, "/clear")
+  CROW_ROUTE(app, "/arraylist/clear")
   ([](){
     arrayList.clear();
     return crow::response(200);
   });
+
+  // ====== Linked List Routing ======
+
+  CROW_ROUTE(app, "/linkedlist/add/<int>")
+  ([](int value) {
+    linkedList.append(value);
+    return crow::response("Added " + std::to_string(value) + " to linked list.");
+  });
+
+  CROW_ROUTE(app, "/linkedlist/data")
+  ([]() {
+    auto data = linkedList.toVector();
+    crow::json::wvalue result;
+    result["size"] = linkedList.getSize();
+    result["values"] = crow::json::wvalue::list();
+
+    for (int v : data) {
+      result["values"][result["values"].size()] = v;
+    }
+
+    return crow::response(result);
+  });
+
+  CROW_ROUTE(app, "/linkedlist/insert/<int>/<int>") 
+  ([](int index, int value) {
+    try {
+      linkedList.insertAt(index, value);
+      return crow::response(200);
+    } catch (const std::out_of_range& e) {
+      return crow::response(400, e.what());
+    }
+  });
+
+  CROW_ROUTE(app, "/linkedlist/remove/<int>")
+  ([](int index) {
+    try {
+      linkedList.removeAt(index);
+      return crow::response(200);
+    } catch (const std::out_of_range& e) {
+      return crow::response(400, e.what());
+    }
+  });
+
+  CROW_ROUTE(app, "/linkedlist/contains/<int>")
+  ([](int value) {
+    return crow::response(linkedList.search(value) ? "true" : "false");
+  });
+
+  CROW_ROUTE(app, "/linkedlist/indexof/<int>")
+  ([](int value) {
+    return crow::response(std::to_string(linkedList.indexOf(value)));
+  });
+
+  CROW_ROUTE(app, "/linkedlist/clear")
+  ([]() {
+    linkedList.clear();
+    return crow::response(200);
+  });
+
+  // General Crow Routing
 
   CROW_ROUTE(app, "/<path>")
   ([](const crow::request& req, std::string path){
@@ -98,10 +162,11 @@ int main() {
    
     std::ifstream in ("public/" + path, std::ios::binary);
     if (!in) return crow::response(404);
+    
     std::ostringstream contents;
     contents << in.rdbuf();
-    
     crow::response res(contents.str());
+
     if (ends_with(path, ".js")) res.set_header("Content-Type", "application/javascript");
     else if (ends_with(path, ".css")) res.set_header("Content-Type", "text/css");
     else if (ends_with(path, ".html")) res.set_header("Content-Type", "text/html");
@@ -109,18 +174,5 @@ int main() {
     return res;
   });
  
-  CROW_ROUTE(app, "/") 
-  ([]() {
-    std::ifstream in("public/index.html", std::ios::binary);
-    if (!in) return crow::response(404, "index.html not found");
-
-    std::ostringstream contents;
-    contents << in.rdbuf();
-    crow::response res(contents.str());
-    res.set_header("Content-Type", "text/html");
-    return res;
-  });
-
-
   app.port(8000).multithreaded().run();
 }

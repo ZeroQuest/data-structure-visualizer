@@ -7,27 +7,32 @@
     <link href="css/style.css" rel="stylesheet"/>
   </head>
   <body class="homepage">
-    <!-- Top Navigation Bar -->
-  <nav id="top-navbar">
-    <div class="nav-left">
-      <a href="index.html">Home</a>
-      <a href="#">About</a>
-    </div>
-    <div class="nav-right">
-      <div class="dropdown">
-        <button class="dropbtn">Data Structures ▾</button>
-        <div class="dropdown-content">
-          <a href="#">Pointers</a>
-          <a href="arraylist.html">Array List</a>
-          <a href="#">Linked List</a>
+  
+  <!-- Top Navigation Bar -->
+  <header>
+    <nav id="top-navbar" role="navigation" aria-label="Main Navigation">
+      <div class="nav-left">
+        <a href="index.html">Home</a>
+        <a href="#">About</a>
+      </div>
+      <div class="nav-right">
+        <div class="dropdown">
+          <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Data Structures ▾</button>
+          <ul class="dropdown-content" role="menu">
+            <li><a href="#">Pointers</a></li>
+            <li><a href="arraylist.html">Array List</a></li>
+            <li><a href="#">Linked List</a></li>
+          </ul>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <main class="homepage">
-    <h1> Welcome to the Data Structure Visualizer</h1>
-    <p> Select a data structure from the navigation menu to begin. </p>
+  <main> 
+    <section class="homepage">
+      <h1> Welcome to the Data Structure Visualizer</h1>
+      <p> Select a data structure from the navigation menu to begin. </p>
+    </section>
   </main>
 
   </body>

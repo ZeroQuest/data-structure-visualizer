@@ -19,7 +19,7 @@ add_form.addEventListener('submit', async (e) => {
   if (!value) return;
 
   try {
-    const res = await fetch(`/add/${value}`);
+    const res = await fetch(`/arraylist/add/${value}`);
     if (!res.ok) throw new Error("Server rejected add");
 
     form.reset();
@@ -36,7 +36,7 @@ insert_form.addEventListener('submit', async (e) => {
   const value = form['insert-value'].value;
 
   try {
-    const res = await fetch(`/insert/${index}/${value}`);
+    const res = await fetch(`/arraylist/insert/${index}/${value}`);
     if (!res.ok) throw new Error("Server rejected insert");
 
     form.reset();
@@ -52,7 +52,7 @@ remove_form.addEventListener('submit', async (e) => {
   const index = form['remove-index'].value;
 
   try {
-    const res = await fetch(`/remove/${index}`);
+    const res = await fetch(`/arraylist/remove/${index}`);
     if (!res.ok) throw new Error("Server rejected removal");
 
     form.reset();
@@ -68,8 +68,8 @@ search_form.addEventListener('submit', async (e) => {
   const value = form['search-value'].value;
 
   try {
-    const containsRes = await fetch(`/contains/${value}`);
-    const indexRes = await fetch(`/indexof/${value}`);
+    const containsRes = await fetch(`/arraylist/contains/${value}`);
+    const indexRes = await fetch(`/arraylist/indexof/${value}`);
     const contains = await containsRes.text();
     const index = await indexRes.text();
 
@@ -89,7 +89,7 @@ set_form.addEventListener('submit', async (e) => {
   const value = form['set-value'].value;
 
   try {
-    const res = await fetch(`/set/${index}/${value}`);
+    const res = await fetch(`/arraylist/set/${index}/${value}`);
     if (!res.ok) throw new Error("Server rejected set");
 
     form.reset();
@@ -101,7 +101,7 @@ set_form.addEventListener('submit', async (e) => {
 
 shrink_button.addEventListener('click', async () => {
   try {
-    const res = await fetch('/shrink');
+    const res = await fetch('/arraylist/shrink');
     if (!res.ok) throw new Error("Server rejected shrink");
 
     await loadData();
@@ -112,7 +112,7 @@ shrink_button.addEventListener('click', async () => {
 
 clear.addEventListener('click', async () => {
   try {
-    const res = await fetch('/clear');
+    const res = await fetch('/arraylist/clear');
     if (!res.ok) throw new Error("Server rejected clear");
 
     await loadData();
@@ -174,7 +174,7 @@ function updateView(data) {
 
 async function loadData() {
 try {  
-  const res = await fetch('/data');
+  const res = await fetch('/arraylist/data');
   const json = await res.json()
 
   sizeSpan.textContent = json.size;
