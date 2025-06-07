@@ -24,6 +24,7 @@ add_form.addEventListener('submit', async (e) => {
 
     form.reset();
     await loadData();
+    updateCodeSnippet(['resize','ensureCapacity','add']);
   } catch (err) {
     alert("Error adding value.");
   }
@@ -41,6 +42,7 @@ insert_form.addEventListener('submit', async (e) => {
 
     form.reset();
     await loadData();
+    updateCodeSnippet(['resize','ensureCapacity','insert']);
   } catch (err) {
     alert("Invalid index for insert.");
   }
@@ -57,6 +59,7 @@ remove_form.addEventListener('submit', async (e) => {
 
     form.reset();
     await loadData();
+    updateCodeSnippet(['remove']);
   } catch (err) {
     alert("Invalid index for removal.");
   }
@@ -70,6 +73,11 @@ search_form.addEventListener('submit', async (e) => {
   try {
     const containsRes = await fetch(`/arraylist/contains/${value}`);
     const indexRes = await fetch(`/arraylist/indexof/${value}`);
+
+    if (!containsRes.ok || !indexRes.ok) {
+      throw new Error(`Server returned ${containsRes.status} / ${indexRes.status}`);
+    }
+
     const contains = await containsRes.text();
     const index = await indexRes.text();
 
@@ -77,6 +85,7 @@ search_form.addEventListener('submit', async (e) => {
       contains === "true" ? `Found at index ${index}` : "Not found in list";
 
     form.reset();
+    updateCodeSnippet(['contains', 'indexOf']);
   } catch (err) {
     alert("Error while searching.");
   }
@@ -94,6 +103,7 @@ set_form.addEventListener('submit', async (e) => {
 
     form.reset();
     await loadData();
+    updateCodeSnippet(['set']);
   } catch (err) {
     alert("Invalid index for set.");
   }
@@ -105,6 +115,7 @@ shrink_button.addEventListener('click', async () => {
     if (!res.ok) throw new Error("Server rejected shrink");
 
     await loadData();
+    updateCodeSnippet(['resize','shrink']);
   } catch (err) {
     alert("Error during shrink operation.");
   }
@@ -116,6 +127,7 @@ clear.addEventListener('click', async () => {
     if (!res.ok) throw new Error("Server rejected clear");
 
     await loadData();
+    updateCodeSnippet(['clear']);
   } catch (err) {
     alert("Error clearing the list.");
   }
@@ -129,6 +141,29 @@ toggleBtn.addEventListener('click', () => {
   sidebar.classList.toggle('collapsed');
   toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '⮞' : '⮜';
 });
+
+
+
+function updateCodeSnippet(keys) {
+  const codeBlock = document.getElementById('code-snippet');
+  if (!codeBlock) {
+    console.error("Code snippet element not found.");
+    return;
+  }
+
+  // Combine code snippets into a raw string
+  const combinedCode = keys && keys.length > 0
+    ? keys.map(k => snippets_arraylist[k] || `// Snippet for "${k}" not found.`).join('\n\n')
+    : "// No code snippet available";
+
+  // Reset the code block to raw text — THIS clears all previous <span> wrappers
+  codeBlock.textContent = combinedCode;
+  // Clear highlight.js internal flag so it can re-highlight
+  delete codeBlock.dataset.highlighted;
+  // Now highlight freshly
+  hljs.highlightElement(codeBlock);
+}
+
 
 function updateView(data) {
   container.innerHTML = "";

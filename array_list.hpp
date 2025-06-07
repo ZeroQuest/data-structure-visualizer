@@ -19,6 +19,8 @@ class ArrayList {
         newData[i] = data[i];
       }
 
+      if(newCapacity == 0) {newCapacity = 1;}
+
       delete[] data;
       data = newData;
       capacity = newCapacity;
