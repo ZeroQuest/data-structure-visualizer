@@ -1,4 +1,4 @@
-const snippets_arraylist = {
+export const snippets_arraylist = {
   resize: `// Resizes the array
   void resize(int newCapacity) {
       int* newData = new int[newCapacity];
