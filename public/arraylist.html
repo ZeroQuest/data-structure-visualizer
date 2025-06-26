@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale-1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ArrayList Visualizer</title>
 
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Highlight.js CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/content.css">
+  <link rel="stylesheet" href="css/arraylist.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/dark.min.css">
 </head>
 <body class="arraylist"> 
-  <!-- Top Navigation Bar -->
   <header>
     <nav id="top-navbar" role="navigation" aria-label="Main Navigation">
       <div class="nav-left">
@@ -21,73 +22,73 @@
         <div class="dropdown">
           <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Data Structures ▾</button>
           <ul class="dropdown-content" role="menu">
-            <li><a href="#">Pointers</a></li>
             <li><a href="arraylist.html">Array List</a></li>
-            <li><a href="#">Linked List</a></li>
+            <li><a href="linkedlist.html">Linked List</a></li>
+            <li><a href="treemap.html">Tree Map</a></li>
           </ul>
         </div>
       </div>
     </nav>
   </header>
-  <!-- Main Visualization Layout -->
+
   <main id="main-container" class="visualization-layout">
-    
     <aside id="sidebar" class="expanded">
       <button id="toggle-btn" aria-label="Toggle Sidebar">⮜</button>
-
       <section id="controls-panel" aria-label="Array Controls">
-        <form id="add-form">
-          <input type="number" id="value-input" placeholder="Enter value" required />
-          <button type="submit">Add</button>
-        </form>
+        <div class="controls-scroll-area">
+          <form id="add-form">
+            <input type="number" id="value-input" placeholder="Enter value" required />
+            <button type="submit">Add</button>
+          </form>
 
-        <form id="insert-form">
-          <input type="number" id="insert-index" min="0" required placeholder="Index" />
-          <input type="number" id="insert-value" required placeholder="Value" />
-          <button type="submit">Insert</button>
-        </form>
+          <form id="insert-form">
+            <input type="number" id="insert-index" min="0" required placeholder="Index" />
+            <input type="number" id="insert-value" required placeholder="Value" />
+            <button type="submit">Insert</button>
+          </form>
 
-        <form id="remove-form">
-          <input type="number" id="remove-index" required placeholder="Index" />
-          <button type="submit">Remove</button>
-        </form>
+          <form id="remove-form">
+            <input type="number" id="remove-index" required placeholder="Index" />
+            <button type="submit">Remove</button>
+          </form>
 
-        <form id="search-form">
-          <input type="number" id="search-value" name="search-value" placeholder="Search Value" />
-          <button type="submit">Search</button>
-        </form>
+          <form id="search-form">
+            <input type="number" id="search-value" name="search-value" placeholder="Search Value" />
+            <button type="submit">Search</button>
+          </form>
 
-        <form id="set-form">
-          <input type="number" id="set-index" placeholder="Index" />
-          <input type="number" id="set-value" placeholder="New Value" />
-          <button type="submit">Set</button>
-        </form>
+          <form id="set-form">
+            <input type="number" id="set-index" placeholder="Index" />
+            <input type="number" id="set-value" placeholder="New Value" />
+            <button type="submit">Set</button>
+          </form>
 
-        <button id="shrink-button">Shrink to Fit</button>
-        <button id="clear-button">Clear</button>
+          <button id="shrink-button">Shrink to Fit</button>
+          <button id="clear-button">Clear</button>
+        </div>
       </section>
     </aside>
+
     <div class="right-column">
-      <!-- Visualization -->
       <section id="array-info-panel">
         <div id="array-container" aria-label="Array Visualization"></div> 
         <div class="info-stats">
           <p><strong>Size:</strong> <span id="size-value">0</span></p>
           <p><strong>Capacity:</strong> <span id="capacity-value">0</span></p>
           <div id="search-result" aria-live="polite"></div>
-          
         </div>
       </section>
-      <!-- Code Display Panel -->
+
       <section id="code-display-panel">
         <pre><code class="language-cpp" id="code-snippet"></code></pre>
       </section>
     </div>
-  </main>   
-  <!-- Highlight.js script -->
+  </main>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>  
   <script type="module" src="snippets_arraylist.js"></script>
   <script type="module" src="utils.js" defer></script>
   <script type="module" src="arraylist.js" defer></script>
 </body>
 </html>
+

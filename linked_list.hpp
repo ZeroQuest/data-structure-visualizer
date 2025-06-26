@@ -1,19 +1,38 @@
 #pragma once
-#include <stdexcept>
+
 #ifndef LINKEDLIST
 #define LINKEDLIST
 
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdint>
+#include <sstream>
+#include <stdexcept>
+#include <tuple>
 
 // Node Struct
 template <typename T>
 struct Node {
   T data;
   Node* next;
-  Node(T value) : data(value), next(nullptr) {}
+  std::string fakeAddress;
+
+  // Static counter for fake memory addresses
+  static uintptr_t nextFakeAddress;
+
+  Node(T value) : data(value), next(nullptr) {
+    std::stringstream ss;
+    ss << "0x" << std::hex << nextFakeAddress;
+    fakeAddress = ss.str();
+    nextFakeAddress += 4;
+  }
 };
+
+// Initialize the start of the fake addresses
+template <typename T>
+uintptr_t Node<T>::nextFakeAddress = 0x1000;
+
 
 // Linked List class 
 template <typename T>
@@ -51,6 +70,13 @@ public:
     length++;
   }
 
+  void push(T value) {
+    Node<T>* newNode = new Node<T>(value);
+    newNode->next = head;
+    head = newNode;
+    length++;
+  }
+
   // Insert a node at a specific index
   void insertAt(T value, int index) {
     if (index < 0 || index > length) {
@@ -70,6 +96,36 @@ public:
       current->next = newNode;
     }
     length++;
+  }
+
+  void popHead() {
+    if (head == nullptr) {
+      throw std::out_of_range("List is empty.");
+    }
+    Node<T>* temp = head;
+    head = head->next;
+    delete temp;
+    length--;
+  }
+
+  void popTail() {
+    if (head == nullptr) {
+      throw std::out_of_range("List is empty.");
+    }
+
+    if (head->next == nullptr) {
+      delete head;
+      head = nullptr;
+    } else {
+      Node<T>* current = head;
+      while (current->next->next != nullptr) {
+        current = current->next;
+      }
+      delete current->next;
+      current->next = nullptr;
+    }
+
+    length--;
   }
 
   // Remove a node at a specific index
@@ -94,6 +150,19 @@ public:
     length--;
   }
 
+  void setValueAt(int index, T value) {
+    if (index < 0 || index >= length) {
+      throw std::out_of_range("Index out of bounds.");
+    }
+
+    Node<T>* current = head;
+    for (int i = 0; i < index; ++i) {
+      current = current->next;
+    }
+    current->data = value;
+  }
+
+
   // Print the linked List
   void print() const {
     Node<T>* current = head;
@@ -110,11 +179,12 @@ public:
   }
 
   // Convert linked list to a vector for easier representation
-  std::vector<T> toVector() const {
-    std::vector<T> result;
+  std::vector<std::tuple<T, std::string, std::string>> toVector() const {
+    std::vector<std::tuple<T, std::string, std::string>> result;
     Node<T>* temp = head;
     while (temp != nullptr) {
-      result.push_back(temp->data);
+      std::string nextAddr = (temp->next) ? temp->next->fakeAddress : "nullptr";
+      result.push_back(std::make_tuple(temp->data, temp->fakeAddress, nextAddr));
       temp = temp->next;
     }
     return result;

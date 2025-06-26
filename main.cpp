@@ -41,6 +41,8 @@ int main() {
     return crow::response(result);
   });
 
+
+
   CROW_ROUTE(app, "/arraylist/insert/<int>/<int>")
   ([](int index, int value){
     try {
@@ -106,15 +108,34 @@ int main() {
     auto data = linkedList.toVector();
     crow::json::wvalue result;
     result["size"] = linkedList.getSize();
-    result["values"] = crow::json::wvalue::list();
 
-    for (int v : data) {
-      result["values"][result["values"].size()] = v;
+    std::vector<crow::json::wvalue> valuesVec;
+    valuesVec.reserve(data.size());
+
+    for (const auto& node : data) {
+      int value = std::get<0>(node);
+      const std::string& addr = std::get<1>(node);
+      const std::string& nextAddr = std::get<2>(node);
+
+      crow::json::wvalue nodeJson;
+      nodeJson["data"] = value;
+      nodeJson["address"] = addr;
+      nodeJson["nextAddress"] = nextAddr;
+
+      valuesVec.push_back(std::move(nodeJson));
     }
+
+    result["values"] = std::move(valuesVec);
 
     return crow::response(result);
   });
 
+  CROW_ROUTE(app, "/linkedlist/inserthead/<int>")
+  ([](int value) {
+    linkedList.push(value);
+    return crow::response("Inserted " + std::to_string(value) + " at head.");
+  });
+  
   CROW_ROUTE(app, "/linkedlist/insert/<int>/<int>") 
   ([](int index, int value) {
     try {
@@ -125,11 +146,41 @@ int main() {
     }
   });
 
+  CROW_ROUTE(app, "/linkedlist/removehead")
+  ([]() {
+    try {
+      linkedList.popHead();
+      return crow::response("Removed head of linked list.");
+    } catch (const std::out_of_range& e) {
+      return crow::response(400, e.what());
+    }
+  });
+
+  CROW_ROUTE(app, "/linkedlist/removetail")
+  ([]() {
+    try {
+      linkedList.popTail();
+      return crow::response("Removed tail of linked list.");
+    } catch (const std::out_of_range& e) {
+      return crow::response(400, e.what());
+    }
+  });
+
   CROW_ROUTE(app, "/linkedlist/remove/<int>")
   ([](int index) {
     try {
       linkedList.removeAt(index);
       return crow::response(200);
+    } catch (const std::out_of_range& e) {
+      return crow::response(400, e.what());
+    }
+  });
+
+  CROW_ROUTE(app, "/linkedlist/setAt/<int>/<int>")
+  ([](int index, int value) {
+    try {
+      linkedList.setValueAt(index, value);
+      return crow::response("Set index " + std::to_string(index) + " to value " + std::to_string(value));
     } catch (const std::out_of_range& e) {
       return crow::response(400, e.what());
     }

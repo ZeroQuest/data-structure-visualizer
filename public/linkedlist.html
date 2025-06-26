@@ -1,10 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Linked List Visualizer</title>
-  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/content.css">
+  <link rel="stylesheet" href="css/linkedlist.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/dark.min.css">
 </head>
 <body class="linkedlist">
   <!-- Top Navigation Bar -->
@@ -18,62 +24,84 @@
         <div class="dropdown">
           <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Data Structures ▾</button>
           <ul class="dropdown-content" role="menu">
-            <li><a href="#">Pointers</a></li>
             <li><a href="arraylist.html">Array List</a></li>
             <li><a href="linkedlist.html">Linked List</a></li>
+            <li><a href="treemap.html">Tree Map</a></li>
           </ul>
         </div>
       </div>
     </nav>
   </header>
 
-  <!-- Main Visualization Layout-->
-  <div id="main-container">
-    <div id="sidebar" class="expanded">
-      <button id="toggle-btn">⮜</button>
-      <div id="controls-panel">
-        <form id="add-form">
-          <input type="number" id="value-input" placeholder="Enter value" required />
-          <button type="submit">Add</button>
-        </form>
+  <main id="main-container" class="visualization-layout">
+    <aside id="sidebar" class="expanded">
+      <button id="toggle-btn" aria-label="Toggle Sidebar">⮜</button>
+      <section id="controls-panel" aria-label="Array Controls">
+        <div class="controls-scroll-area">
+          <form id="add-form">
+            <input type="number" id="value-input" placeholder="Enter value" required />
+            <button type="submit">Insert at Tail</button>
+          </form>
 
-        <form id="insert-form">
-          <input type="number" id="insert-index" min="0" required placeholder="Index">
-          <input type="number" id="insert-value" required placeholder="Value">
-          <button type="submit">Insert</button>
-        </form>
+          <form id="insert-head-form">
+            <input type="number" id="insert-head-value" placeholder="Value" required />
+            <button type="submit">Insert at Head</button>
+          </form>
 
-        <form id="remove-form">
-          <input type="number" id="remove-index" placeholder="Index" required>
-          <button type="submit">Remove</button>
-        </form>
+          <form id="insert-form">
+            <input type="number" id="insert-index" min="0" required placeholder="Index" />
+            <input type="number" id="insert-value" required placeholder="Value" />
+            <button type="submit">Insert at Index</button>
+          </form>
 
-        <form id="search-form">
-          <input type="number" id="search-value" placeholder="Search Value">
-          <button type="submit">Search</button>
-        </form>
-        <div id="search-result"></div>
+          <form id="remove-form">
+            <input type="number" id="remove-index" required placeholder="Index" />
+            <button type="submit">Remove</button>
+          </form>
+          
+          <form id="remove-head-form">
+            <button id="remove-head-button">Remove Head</button>
+          </form>
 
-        <form id="set-form">
-          <input type="number" id="set-index" placeholder="Index">
-          <input type="number" id="set-value" placeholder="New Value">
-          <button type="submit">Set</button>
-        </form>
+          <form id="remove-tail-form">
+            <button id="remove-tail-button">Remove Tail</button>
+          </form>
 
-        <button id="clear-button">Clear</button>
-      </div>
+          <form id="search-form">
+            <input type="number" id="search-value" name="search-value" placeholder="Search Value" />
+            <button type="submit">Search</button>
+          </form>
+
+          <form id="set-form">
+            <input type="number" id="set-index" placeholder="Index" />
+            <input type="number" id="set-value" placeholder="New Value" />
+            <button type="submit">Set Value</button>
+          </form>
+
+          <button id="clear-button">Clear</button>
+        </div>
+      </section>
+    </aside>
+
+    <div class="right_column">
+      <section id="linkedlist-info-panel">
+        <div id="linkedlist-container" aria-label="Linked List Visualization"></div>
+        <div class="info-stats">
+          <p><strong>Size:</strong> <span id="size-value">0</span></p>
+          <div id="search-result" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="code-display-panel">
+        <pre><code class="language-cpp" id="code-snippet"></code></pre>
+      </section>
     </div>
+  </main>
 
-    <!-- Toolbar Layout -->
-    <div id="linkedlist-info-panel">
-      <div id="linkedlist-container"></div>
-      <div class="info-stats">
-        <p><strong>Size:</strong> <span id="size-value">0</span></p>
-      </div>
-    </div>
-  </div>
-
-  <script src="linkedlist.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script type="module" src="snippets_linkedlist.js"></script>
+  <script type="module" src="utils.js" defer></script>
+  <script type="module" src="linkedlist.js"></script>
 </body>
 </html>
 

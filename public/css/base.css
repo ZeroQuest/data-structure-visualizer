@@ -1,0 +1,37 @@
+/* ========= base.css ========= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+  background-color: #222;
+  color: white;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* ========= Utility Classes ========= */
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-grow { flex-grow: 1; }
+.gap-sm { gap: 0.25rem; }
+.gap-md { gap: 0.5rem; }
+.gap-lg { gap: 1rem; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-hidden { overflow: hidden; }
+.text-center { text-align: center; }
+.text-monospace { font-family: monospace; }
+.text-bold { font-weight: bold; }
+.shadow { box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.border-radius { border-radius: 8px; }
+
