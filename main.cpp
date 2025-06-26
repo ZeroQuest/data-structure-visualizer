@@ -1,6 +1,7 @@
 #include "crow_all.h"
 #include "array_list.hpp"
 #include "linked_list.hpp"
+#include "tree_map.hpp"
 #include <sstream>
 #include <fstream>
 #include <stdexcept>
@@ -8,6 +9,7 @@
 
 ArrayList arrayList;
 LinkedList<int> linkedList;
+TreeMap<int, int> treeMap;
 
 bool ends_with(const std::string& str, const std::string& suffix) {
   return str.size() >= suffix.size() &&
@@ -200,6 +202,207 @@ int main() {
   ([]() {
     linkedList.clear();
     return crow::response(200);
+  });
+
+  // ====== Tree Map Routing ====== 
+
+  //Data
+  CROW_ROUTE(app, "/treemap/data")
+  ([]() {
+    auto data = treeMap.toVector();
+    crow::json::wvalue result;
+    result["size"] = treeMap.size();
+
+    std::vector<crow::json::wvalue> nodes;
+    nodes.reserve(data.size());
+
+    for (const auto& node : data) {
+      crow::json::wvalue nodeJson;
+      nodeJson["key"] = std::get<0>(node);
+      nodeJson["value"] = std::get<1>(node);
+      nodeJson["address"] = std::get<2>(node);
+      nodeJson["parent"] = std::get<3>(node);
+      nodeJson["left"] = std::get<4>(node);
+      nodeJson["right"] = std::get<5>(node);
+      nodeJson["color"] = std::get<6>(node);
+
+      nodes.push_back(std::move(nodeJson));
+    }
+
+    result["nodes"] = std::move(nodes);
+
+    return crow::response(result);
+  });
+
+  // Insert
+  CROW_ROUTE(app, "/treemap/insert/<int>/<int>")
+  ([](int key, int value) {
+    treeMap.insert(key, value);
+    return crow::response("Inserted key=" + std::to_string(key) + ", value=" + std::to_string(value));
+  });
+
+  // Remove
+  CROW_ROUTE(app, "/treemap/remove/<int>")
+  ([](int key) {
+    treeMap.remove(key);
+    return crow::response("Removed key=" + std::to_string(key));
+  });
+
+  // Search (returns true/false)
+  CROW_ROUTE(app, "/treemap/contains/<int>")
+  ([](int key) {
+    return crow::response(treeMap.contains(key) ? "true" : "false");
+  });
+
+  // Get value (if exists)
+  CROW_ROUTE(app, "/treemap/get/<int>")
+  ([](int key) {
+    auto val = treeMap.get(key);
+    return crow::response(val ? std::to_string(*val) : "null");
+  });
+
+  // Get node info
+  CROW_ROUTE(app, "/treemap/nodeinfo/<int>")
+  ([](int key) {
+    auto info = treeMap.getNodeInfo(key);
+    if (!info) return crow::response(404, "Node not found");
+
+    auto [k, v, addr, parent, left, right, color] = *info;
+    crow::json::wvalue json;
+    json["key"] = k;
+    json["value"] = v;
+    json["address"] = addr;
+    json["parent"] = parent;
+    json["left"] = left;
+    json["right"] = right;
+    json["color"] = color;
+    return crow::response(json);
+  });
+
+  // Clear
+  CROW_ROUTE(app, "/treemap/clear")
+  ([] {
+    treeMap.clear();
+    return crow::response("TreeMap cleared");
+  });
+
+  // Size
+  CROW_ROUTE(app, "/treemap/size")
+  ([] {
+    return crow::response(std::to_string(treeMap.size()));
+  });
+
+  // Inorder traversal
+  CROW_ROUTE(app, "/treemap/inorder")
+  ([] {
+    auto nodes = treeMap.getInorder();
+    crow::json::wvalue result;
+
+    std::vector<crow::json::wvalue> nodeList;
+    nodeList.reserve(nodes.size());
+
+    for (const auto& [key, value, address, parent, left, right, color] : nodes) {
+      crow::json::wvalue node;
+      node["key"] = key;
+      node["value"] = value;
+      node["address"] = address;
+      node["parent"] = parent;
+      node["left"] = left;
+      node["right"] = right;
+      node["color"] = color;
+
+      nodeList.push_back(std::move(node));
+    }
+
+    result["values"] = std::move(nodeList);
+    result["size"] = nodes.size();
+
+    return crow::response(result);
+  });
+
+
+  // Preorder traversal
+  CROW_ROUTE(app, "/treemap/preorder")
+  ([] {
+    auto nodes = treeMap.getPreorder();
+    crow::json::wvalue result;
+
+    std::vector<crow::json::wvalue> nodeList;
+    nodeList.reserve(nodes.size());
+
+    for (const auto& [key, value, address, parent, left, right, color] : nodes) {
+      crow::json::wvalue node;
+      node["key"] = key;
+      node["value"] = value;
+      node["address"] = address;
+      node["parent"] = parent;
+      node["left"] = left;
+      node["right"] = right;
+      node["color"] = color;
+
+      nodeList.push_back(std::move(node));
+    }
+
+    result["values"] = std::move(nodeList);
+    result["size"] = nodes.size();
+
+    return crow::response(result);
+  });
+
+  // Postorder traversal
+  CROW_ROUTE(app, "/treemap/postorder")
+  ([] {
+    auto nodes = treeMap.getPostorder();
+    crow::json::wvalue result;
+
+    std::vector<crow::json::wvalue> nodeList;
+    nodeList.reserve(nodes.size());
+
+    for (const auto& [key, value, address, parent, left, right, color] : nodes) {
+      crow::json::wvalue node;
+      node["key"] = key;
+      node["value"] = value;
+      node["address"] = address;
+      node["parent"] = parent;
+      node["left"] = left;
+      node["right"] = right;
+      node["color"] = color;
+
+      nodeList.push_back(std::move(node));
+    }
+
+    result["values"] = std::move(nodeList);
+    result["size"] = nodes.size();
+
+    return crow::response(result);
+  });
+
+  // Vector serialization (same format as inorder)
+  CROW_ROUTE(app, "/treemap/vector")
+  ([] {
+    auto nodes = treeMap.toVector();  // Likely same as getInorder
+    crow::json::wvalue result;
+
+    std::vector<crow::json::wvalue> nodeList;
+    nodeList.reserve(nodes.size());
+
+    for (const auto& [key, value, address, parent, left, right, color] : nodes) {
+      crow::json::wvalue node;
+      node["key"] = key;
+      node["value"] = value;
+      node["address"] = address;
+      node["parent"] = parent;
+      node["left"] = left;
+      node["right"] = right;
+      node["color"] = color;
+
+      nodeList.push_back(std::move(node));
+    }
+
+    result["values"] = std::move(nodeList);
+    result["size"] = nodes.size();
+
+    return crow::response(result);
   });
 
   // General Crow Routing
