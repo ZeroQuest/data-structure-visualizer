@@ -281,6 +281,9 @@ async function loadData() {
     const res = await fetch('/linkedlist/data');
     const data = await res.json();
     updateLinkedListView(data);
+
+    const resultElem = document.getElementById('search-result');
+    if (resultElem) resultElem.textContent = '';
   } catch (err) {
     console.error("Failed to fetch linked list data:", err);
   }

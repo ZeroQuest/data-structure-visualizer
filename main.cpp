@@ -248,12 +248,6 @@ int main() {
     return crow::response("Removed key=" + std::to_string(key));
   });
 
-  // Search (returns true/false)
-  CROW_ROUTE(app, "/treemap/contains/<int>")
-  ([](int key) {
-    return crow::response(treeMap.contains(key) ? "true" : "false");
-  });
-
   // Get value (if exists)
   CROW_ROUTE(app, "/treemap/get/<int>")
   ([](int key) {
@@ -277,6 +271,23 @@ int main() {
     json["right"] = right;
     json["color"] = color;
     return crow::response(json);
+  });
+
+  // Set value if given a key
+  CROW_ROUTE(app, "/treemap/setvalue/<int>/<int>")
+  ([](int key, int newValue) {
+      bool updated = treeMap.setValue(key, newValue);
+      if (!updated) {
+          return crow::response(404, "Node not found or update failed");
+      }
+      return crow::response(200, "Value updated");
+  });
+
+  // Searches the treemap for a key
+  CROW_ROUTE(app, "/treemap/search/<int>")
+  ([](int key) {
+      bool found = treeMap.search(key);
+      return crow::response(found ? "true" : "false");
   });
 
   // Clear

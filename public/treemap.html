@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tree Map Visualizer</title>
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/content.css" />
+  <link rel="stylesheet" href="css/treemap.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/dark.min.css"
+  />
+</head>
+<body class="treemap">
+  <!-- Top Navigation Bar -->
+  <header>
+    <nav id="top-navbar" role="navigation" aria-label="Main Navigation">
+      <div class="nav-left">
+        <a href="index.html">Home</a>
+        <a href="#">About</a>
+      </div>
+      <div class="nav-right">
+        <div class="dropdown">
+          <button
+            class="dropbtn"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Data Structures ▾
+          </button>
+          <ul class="dropdown-content" role="menu">
+            <li><a href="arraylist.html">Array List</a></li>
+            <li><a href="linkedlist.html">Linked List</a></li>
+            <li><a href="treemap.html">Tree Map</a></li>
+            <li><a href="hashmap.html">Hash Map</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-container" class="visualization-layout">
+    <aside id="sidebar" class="expanded">
+      <button id="toggle-btn" aria-label="Toggle Sidebar">⮜</button>
+      <section id="controls-panel" aria-label="Tree Map Controls">
+        <div class="controls-scroll-area">
+          <!-- Insert Node -->
+          <form id="insert-form">
+            <input
+              type="number"
+              id="insert-key"
+              placeholder="Key"
+              required
+              aria-label="Key to insert"
+            />
+            <input
+              type="text"
+              id="insert-value"
+              placeholder="Value"
+              required
+              aria-label="Value to insert"
+            />
+            <button type="submit">Insert Node</button>
+          </form>
+
+          <!-- Remove Node -->
+          <form id="remove-form">
+            <input
+              type="number"
+              id="remove-key"
+              placeholder="Key to Remove"
+              required
+              aria-label="Key to remove"
+            />
+            <button type="submit">Remove Node</button>
+          </form>
+
+          <!-- Search Node -->
+          <form id="search-form">
+            <input
+              type="number"
+              id="search-key"
+              placeholder="Search Key"
+              aria-label="Key to search"
+            />
+            <button type="submit">Search</button>
+          </form>
+
+          <!-- Set Node Value -->
+          <form id="set-form">
+            <input
+              type="number"
+              id="set-key"
+              placeholder="Key"
+              required
+              aria-label="Key to update"
+            />
+            <input
+              type="text"
+              id="set-value"
+              placeholder="New Value"
+              required
+              aria-label="New value"
+            />
+            <button type="submit">Set Value</button>
+          </form>
+
+          <!-- Traversals -->
+          <button id="inorder-btn">Inorder Traversal</button>
+          <button id="preorder-btn">Preorder Traversal</button>
+          <button id="postorder-btn">Postorder Traversal</button>
+          <button id="clear-btn">Clear Tree</button>
+        </div>
+      </section>
+    </aside>
+
+    <div class="right_column">
+      <section id="treemap-info-panel">
+        <div
+          id="treemap-container"
+          aria-label="Tree Map Visualization"
+        ></div>
+        <div class="info-stats">
+          <p>
+            <strong>Size:</strong> <span id="size-value">0</span>
+          </p>
+          <div id="search-result" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="code-display-panel">
+        <pre><code class="language-cpp" id="code-snippet"></code></pre>
+      </section>
+    </div>
+  </main>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+  ></script>
+  <script type="module" src="snippets_treemap.js" defer></script>
+  <script type="module" src="utils.js" defer></script>
+  <script type="module" src="treemap.js"></script>
+</body>
+</html>
+

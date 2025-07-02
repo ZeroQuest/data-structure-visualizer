@@ -1,0 +1,132 @@
+.right_column {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Or whatever height you want the whole column to fill */
+  width: 100%;
+}
+
+/* Panel for visualization and stats */
+#treemap-info-panel {
+  flex: 0 0 50%; /* Half of right_column */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container holding the SVG */
+#treemap-container {
+  flex-grow: 1; /* Takes remaining space in info-panel after stats */
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ensure SVG fills its container */
+#treemap-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Display stats below the SVG */
+.info-stats {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Code panel below the info panel */
+#code-display-panel {
+  flex: 0 0 50%; 
+  overflow-y: auto;
+  padding: 0px 10px 28px 10px;
+  background-color: #1e1e1e;
+}
+
+
+/* ========= Forms and Inputs ========= */
+body.treemap form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body.treemap form input,
+body.treemap form button {
+  padding: 8px;
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+body.treemap button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+  width: 100%; /* full width */
+}
+
+body.treemap button:hover {
+  background-color: #0056b3;
+}
+
+/* ========= Search Result and Info ========= */
+body.treemap #search-result {
+  font-weight: bold;
+  color: #007bff;
+  align-items: center;
+  display: flex;
+}
+
+body.treemap .array-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+
+
+body.treemap #controls-panel {
+  padding: 
+}
+
+body.treemap #controls-panel input,
+body.treemap #controls-panel button {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Treemap-specific button color theme */
+body.treemap #controls-panel button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+body.treemap #controls-panel button:hover {
+  background-color: #0056b3;
+}
+
+/* Optional: style for labels */
+body.treemap #controls-panel label {
+  color: white;
+  font-size: 14px;
+}
+
+/* Optional section grouping utility (for visual spacing only) */
+body.treemap #controls-panel .section {
+  margin-bottom: 16px;
+}

@@ -9,8 +9,10 @@
 #include <tuple>
 #include <functional>
 
+// Enum for node color
 enum class Color { RED, BLACK };
 
+// Node structure
 template <typename K, typename V>
 struct TreeNode {
   K key;
@@ -21,6 +23,7 @@ struct TreeNode {
   TreeNode* parent;
   std::string address;
 
+  // Constructor
   TreeNode(K k, V v) : key(k), value(v), color(Color::RED),
     left(nullptr), right(nullptr), parent(nullptr) {
     static int nextOffset = 0;
@@ -32,6 +35,7 @@ struct TreeNode {
   }
 };
 
+// Red-Black Tree Map
 template <typename K, typename V>
 class TreeMap {
 private:
@@ -40,12 +44,12 @@ private:
 
   //Rotates the left child to the parent's location and the parent to the left child's location
   void rotateLeft(TreeNode<K, V>* x) {
-    TreeNode<K, V>* y = x->right;
-    x->right = y->left;
+    TreeNode<K, V>* y = x->right;     // y is x's right child
+    x->right = y->left;               // Turn y's left subtree into x's right subtree
     if (y->left) y->left->parent = x;
     y->parent = x->parent;
     if (!x->parent)
-      root = y;
+      root = y;                       // x was root, now y becomes root
     else if (x == x->parent->left)
       x->parent->left = y;
     else
@@ -56,12 +60,12 @@ private:
 
   //Rotates the right child to the parent's location and the parent to the right child's location
   void rotateRight(TreeNode<K, V>* y) {
-    TreeNode<K, V>* x = y->left;
-    y->left = x->right;
+    TreeNode<K, V>* x = y->left;        // x is y's left child 
+    y->left = x->right;                 // Turn x's right subtree into y's left subtree
     if (x->right) x->right->parent = y;
     x->parent = y->parent;
     if (!y->parent)
-      root = x;
+      root = x;                         // y was root, now x becomes root
     else if (y == y->parent->left)
       y->parent->left = x;
     else
@@ -75,23 +79,26 @@ private:
     while (z->parent && z->parent->color == Color::RED) {
       TreeNode<K, V>* grandparent = z->parent->parent;
       if (z->parent == grandparent->left) {
-        TreeNode<K, V>* y = grandparent->right;
+        TreeNode<K, V>* y = grandparent->right; // Uncle node
         if (y && y->color == Color::RED) {
+          // Case 1: Uncle is red -> Recolor
           z->parent->color = Color::BLACK;
           y->color = Color::BLACK;
           grandparent->color = Color::RED;
           z = grandparent;
         } else {
           if (z == z->parent->right) {
+            // Case 2: z is right child -> left rotate
             z = z->parent;
             rotateLeft(z);
           }
+          // Case 3: z is left child -> right rotate
           z->parent->color = Color::BLACK;
           grandparent->color = Color::RED;
           rotateRight(grandparent);
         }
       } else {
-        TreeNode<K, V>* y = grandparent->left;
+        TreeNode<K, V>* y = grandparent->left; // Uncle node
         if (y && y->color == Color::RED) {
           z->parent->color = Color::BLACK;
           y->color = Color::BLACK;
@@ -108,10 +115,11 @@ private:
         }
       }
     }
-    root->color = Color::BLACK;
+    root->color = Color::BLACK; // Root is always black.
   }
 
   //Helper function to transplant subtrees
+  //Replaces subtree rooted at u with subtree rooted at v
   void transplant(TreeNode<K, V>* u, TreeNode<K, V>* v) {
     if (!u->parent)
       root = v;
@@ -240,8 +248,10 @@ private:
   }
 
 public:
+  // Destructor
   ~TreeMap() { clear(root); }
 
+  // Insert a key-value pair into the tree
   void insert(K key, V value) {
     TreeNode<K, V>* newNode = new TreeNode<K, V>(key, value);
     TreeNode<K, V>* y = nullptr;
@@ -267,6 +277,7 @@ public:
     fixInsert(newNode);
   }
 
+  // Remove a key from the tree
   void remove(K key) {
     TreeNode<K, V>* z = root;
     while (z) {
@@ -316,6 +327,7 @@ public:
       fixRemove(x, xParent);
   }
 
+  // Search for a key in the tree
   bool search(K key) const {
     TreeNode<K, V>* current = root;
     while (current) {
@@ -326,6 +338,7 @@ public:
     return false;
   }
 
+  // Return a pointer to value if found
   V* get (K key) {
     TreeNode<K, V>* current = root;
     while (current) {
@@ -336,10 +349,12 @@ public:
     return nullptr;
   }
 
+  // Check if a key exists
   bool contains(K key) const {
     return search(key);
   }
 
+  // Removes all elements from the tree
   void clear() {
     clear(root);
     root = nullptr;
@@ -365,6 +380,16 @@ public:
     return std::nullopt;
   }
 
+  // Update values at existing key
+  bool setValue(K key, V newValue) {
+    V* valuePtr = get(key);
+    if (!valuePtr) return false;
+
+    *valuePtr = newValue;
+    return true;
+  }
+
+  // Return the number of nodes in the tree
   int size() const { return treeSize; }
 
   //Inorder wrapper function

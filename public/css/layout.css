@@ -99,6 +99,11 @@
   flex-shrink: 0;
   position: relative;
   transition: width 0.3s ease, opacity 0.3s ease;
+  padding-top: calc(30px + 10px);
+  padding-bottom: 0;
+  opacity: 1;
+  margin: 0;
+  overflow: visible;
 }
 
 #sidebar.collapsed {
