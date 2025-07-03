@@ -78,7 +78,7 @@ searchForm.addEventListener('submit', async (e) => {
     searchForm.reset();
     updateCodeSnippet(['contains', 'search', 'getNodeInfo'], snippets_treemap);
   } catch (err) {
-    alert("Error searching for key in treemap.")
+    alert("Error searching for key in treemap.");
   }
   //e.target.reset();
 });

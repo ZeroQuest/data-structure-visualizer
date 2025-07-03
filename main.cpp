@@ -1,6 +1,7 @@
 #include "crow_all.h"
 #include "array_list.hpp"
 #include "linked_list.hpp"
+#include "hash_map.hpp"
 #include "tree_map.hpp"
 #include <sstream>
 #include <fstream>
@@ -10,6 +11,7 @@
 ArrayList arrayList;
 LinkedList<int> linkedList;
 TreeMap<int, int> treeMap;
+HashMap<int, int> hashMap;
 
 bool ends_with(const std::string& str, const std::string& suffix) {
   return str.size() >= suffix.size() &&
@@ -416,6 +418,94 @@ int main() {
     return crow::response(result);
   });
 
+  // ========= Hash Map Routing =========
+
+  // Hashmap data
+  CROW_ROUTE(app, "/hashmap/data")
+  ([]() {
+    auto data = hashMap.toVector();
+    crow::json::wvalue out;
+    int idx = 0;
+    
+    if (data.empty()) return crow::response(out);
+
+    for (auto& [k, v, addr, bucket, nextAddr] : data) {
+      crow::json::wvalue entry;
+      entry["key"] = k;
+      entry["value"] = v;
+      entry["address"] = addr;
+      entry["bucket"] = bucket;
+      entry["next"] = nextAddr;
+      out[idx++] = {
+        {"key", k},
+        {"value", v},
+        {"address", addr},
+        {"bucket", bucket},
+        {"next", nextAddr}
+      };
+    }
+    return crow::response(out);
+  });
+
+  // Insert or update entry
+  CROW_ROUTE(app, "/hashmap/insert/<int>/<int>")
+  ([](int key, int value) {
+    hashMap.insert(key, value);
+    return crow::response(200, "Inserted");
+  });
+
+   // Get a value by key
+  CROW_ROUTE(app, "/hashmap/get/<int>")
+  ([](int key) {
+    auto result = hashMap.get(key);
+    if (!result) return crow::response(404, "Key not found");
+
+    crow::json::wvalue res;
+    res["key"] = key;
+    res["value"] = *result;
+    return crow::response(res);
+  });
+
+  // Check if key exists
+  CROW_ROUTE(app, "/hashmap/has/<int>")
+  ([](int key) {
+    bool found = hashMap.search(key);
+    return crow::response(found ? "true" : "false");
+  });
+
+  // Remove an entry by key
+  CROW_ROUTE(app, "/hashmap/remove/<int>")
+  ([](int key) {
+    if (!hashMap.search(key)) return crow::response(404, "Key not found");
+    hashMap.remove(key);
+    return crow::response(200, "Removed");
+  });
+
+   // Update the value for an existing key
+  CROW_ROUTE(app, "/hashmap/set/<int>/<int>")
+  ([](int key, int value) {
+    if (!hashMap.setValue(key, value)) {
+      return crow::response(404, "Key not found");
+    }
+    return crow::response(200, "Updated");
+  });
+
+  // Clear the hashmap
+  CROW_ROUTE(app, "/hashmap/clear")
+  ([]() {
+    hashMap.clear();
+    return crow::response(200, "Cleared");
+  });
+
+  // Return size and capacity
+  CROW_ROUTE(app, "/hashmap/info")
+  ([]() {
+    crow::json::wvalue res;
+    res["size"] = hashMap.size();
+    res["buckets"] = hashMap.bucketCount();
+    return crow::response(res);
+  });
+
   // General Crow Routing
 
   CROW_ROUTE(app, "/<path>")
@@ -424,7 +514,6 @@ int main() {
     if (path.find("..") != std::string::npos)
       return crow::response(403);
 
-   
     std::ifstream in ("public/" + path, std::ios::binary);
     if (!in) return crow::response(404);
     
