@@ -1,0 +1,20 @@
+main.homepage {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+main.homepage section.home-content {
+  max-width: 700px;
+}
+
+
+
+main.homepage section.home-content ul {
+  display: inline-block;
+  text-align: left;
+  list-style-position: inside;
+  margin: 0 auto;
+  padding-left: 1.2em;
+}
