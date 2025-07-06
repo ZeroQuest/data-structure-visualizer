@@ -1,1 +1,3 @@
 *.o
+public/javascript/script.js
+build/server
