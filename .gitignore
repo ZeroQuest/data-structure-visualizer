@@ -1,4 +1,4 @@
 *.o
 public/javascript/script.js
-build/server
+build/
 public/css/style.css
