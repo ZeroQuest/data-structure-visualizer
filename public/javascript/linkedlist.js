@@ -1,3 +1,12 @@
+/*
+This software includes SVG markup derived from W3C documents.
+Copyright © [Year] World Wide Web Consortium.
+https://www.w3.org/copyright/software-license-2023/
+
+Permission is hereby granted to copy, modify, and distribute this work, provided that this notice appears in all copies.
+*/
+
+
 import { updateCodeSnippet, sidebarToggle } from './utils.js';
 import { snippets_linkedlist } from './snippets_linkedlist.js';
 
