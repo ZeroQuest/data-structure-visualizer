@@ -60,6 +60,7 @@ This project uses the following open-source libraries:
 
 - Crow v1.2.0: A C++ web framework (https://github.com/CrowCpp/Crow)
 - highlight.js v11.11.1: Syntax highlighting for code blocks (https://highlightjs.org)
+- SVG samples derived from [W3C SVG examples](https://www.w3.org/Graphics/SVG/), used under the [W3C Software License](https://www.w3.org/copyright/software-license-2023/).
 
 Please see the `LICENSES/` directory for full license texts.
 
