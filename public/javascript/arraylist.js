@@ -1,8 +1,7 @@
 import { sidebarToggle, updateCodeSnippet } from './utils.js';
 import { snippets_arraylist } from './snippets_arraylist.js';
 
-// constants for easier code readablity/coding
-
+// Constants for easier code readablity/coding
 const add_form = document.getElementById('add-form');
 const input = document.getElementById('value-input');
 const container = document.getElementById('array-container');

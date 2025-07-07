@@ -21,7 +21,8 @@ const toggleBtn = document.getElementById('toggle-btn');
 // Sidebar functionality
 sidebarToggle();
 
-// Insert a key-value pair
+// Toolbox functions
+
 insertForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const key = parseInt(document.getElementById('insert-key').value);
@@ -117,6 +118,7 @@ clearBtn.addEventListener('click', async () => {
   }
 });
 
+// SVG Creation
 function initializeHashmapSVG(containerId = "hashmap-container") {
   const container = document.getElementById(containerId);
   if (!container) return;

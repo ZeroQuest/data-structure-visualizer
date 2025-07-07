@@ -6,7 +6,6 @@ https://www.w3.org/copyright/software-license-2023/
 Permission is hereby granted to copy, modify, and distribute this work, provided that this notice appears in all copies.
 */
 
-
 import { updateCodeSnippet, sidebarToggle } from './utils.js';
 import { snippets_linkedlist } from './snippets_linkedlist.js';
 
@@ -179,11 +178,12 @@ clear.addEventListener('click', async () => {
   }
 });
 
-
+// Helper function for faux addresses
 function generateAddress(index) {
   return `0x${(BASE_ADDR + index * STRIDE).toString(16)}`;
 }
 
+// SVG Creation
 export function createSVGArrow() {
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");

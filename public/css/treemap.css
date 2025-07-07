@@ -1,27 +1,23 @@
 .right_column {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Or whatever height you want the whole column to fill */
-  width: 100%;
+  height: 100vh;   width: 100%;
 }
 
-/* Panel for visualization and stats */
 #treemap-info-panel {
-  flex: 0 0 50%; /* Half of right_column */
-  display: flex;
+  flex: 0 0 50%;   display: flex;
   flex-direction: column;
 }
 
 /* Container holding the SVG */
 #treemap-container {
-  flex-grow: 1; /* Takes remaining space in info-panel after stats */
+  flex-grow: 1; 
   width: 100%;
   height: 50%;
   overflow: hidden;
   position: relative;
 }
 
-/* Ensure SVG fills its container */
 #treemap-container svg {
   width: 100%;
   height: 100%;
@@ -69,7 +65,7 @@ body.treemap button {
   border: none;
   border-radius: 4px;
   transition: background 0.3s;
-  width: 100%; /* full width */
+  width: 100%; 
 }
 
 body.treemap button:hover {
@@ -91,9 +87,6 @@ body.treemap .array-info {
   font-weight: bold;
 }
 
-
-
-
 body.treemap #controls-panel {
   padding: 
 }
@@ -108,7 +101,6 @@ body.treemap #controls-panel button {
   width: 100%;
 }
 
-/* Treemap-specific button color theme */
 body.treemap #controls-panel button {
   background-color: #007bff;
   color: white;
@@ -120,13 +112,11 @@ body.treemap #controls-panel button:hover {
   background-color: #0056b3;
 }
 
-/* Optional: style for labels */
 body.treemap #controls-panel label {
   color: white;
   font-size: 14px;
 }
 
-/* Optional section grouping utility (for visual spacing only) */
 body.treemap #controls-panel .section {
   margin-bottom: 16px;
 }

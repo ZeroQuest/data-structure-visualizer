@@ -22,7 +22,10 @@ const searchResult = document.getElementById('search-result');
 const toggleBtn = document.getElementById('toggle-btn');
 const container = document.getElementById("treemap-container");
 
+// Sidebar functionality
 sidebarToggle();
+
+// Toolbox functions
 
 insertForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -173,6 +176,7 @@ async function loadSize() {
 // Initialize size display on page load
 loadSize();
 
+// SVG Creation
 const svgNS = "http://www.w3.org/2000/svg";
 const svg = document.createElementNS(svgNS, "svg");
 svg.setAttribute("width", "100%");

@@ -114,7 +114,7 @@ body.hashmap button {
   border: none;
   border-radius: 4px;
   transition: background 0.3s;
-  width: 100%; /* full width */
+  width: 100%; 
 }
 
 body.hashmap button:hover {
@@ -174,7 +174,6 @@ body.hashmap #toggle-btn {
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-/* Ensure consistent vertical spacing in controls panel */
 body.hashmap #controls-panel button {
   padding: 8px;
   font-size: 14px;
@@ -184,7 +183,6 @@ body.hashmap #controls-panel button {
   width: 100%;
 }
 
-/* Optional: remove margin on last child to avoid extra space */
 body.hashmap #controls-panel button:last-child,
 body.hashmap #controls-panel form:last-child {
 }

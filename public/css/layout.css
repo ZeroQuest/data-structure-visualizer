@@ -11,6 +11,7 @@
   gap: 1rem;
 }
 
+/* Navbar */
 #top-navbar {
   height: 50px;
   background-color: #1f1f1f;
@@ -89,6 +90,8 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+/* Sidebar */
 #sidebar {
   background-color: #1f1f1f;
   color: white;
@@ -159,6 +162,7 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
+/* Standard Visualization Formatting */
 .right_column {
   display: flex;
   flex-direction: column;
@@ -169,7 +173,6 @@
   min-height: 0;
   overflow-y: auto;
 }
-
 
 .right-column {
   display: flex;

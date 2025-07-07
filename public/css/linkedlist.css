@@ -22,7 +22,7 @@ body.linkedlist .svg-arrow-wrapper {
 /* Node container */
 body.linkedlist .ll-node {
   background: #66aaff;
-  border: 2px solid #333; /* match array list border */
+  border: 2px solid #333; 
   border-radius: 10px;
   padding: 10px;
   width: 120px;
@@ -39,7 +39,6 @@ body.linkedlist .ll-node:hover {
   box-shadow: 0 0 12px rgba(79, 195, 247, 0.5);
 }
 
-/* Address & Index inside node */
 body.linkedlist .ll-address,
 body.linkedlist .ll-index {
   font-size: 0.65rem;
@@ -47,7 +46,6 @@ body.linkedlist .ll-index {
   font-family: monospace;
 }
 
-/* Data and pointer row inside the node */
 body.linkedlist .ll-box {
   display: flex;
   justify-content: space-between;
@@ -67,16 +65,6 @@ body.linkedlist .ll-field-pointer {
   font-size: 0.7rem;
 }
 
-/*
-body.linkedlist .ll-field-data {
-  background: #ffd166;
-}
-
-body.linkedlist .ll-field-pointer {
-  background: #8e44ad;
-}
-*/
-
 body.linkedlist .ll-label {
   color: #222;
   margin-bottom: 2px;
@@ -90,7 +78,6 @@ body.linkedlist .ll-value {
   text-align: center;
 }
 
-/* Arrow + label container */
 body.linkedlist .svg-arrow-wrapper {
   display: flex;
   flex-direction: column;
@@ -105,7 +92,6 @@ body.linkedlist .svg-arrow-wrapper:hover {
   transform: scale(1.1);
 }
 
-/* Arrow label above the line */
 body.linkedlist .pointer-label {
   font-size: 0.65rem;
   margin-bottom: 2px;
@@ -113,28 +99,23 @@ body.linkedlist .pointer-label {
   font-family: monospace;
 }
 
-/* Default arrow styling */
 body.linkedlist .ll-pointer-arrow line {
   stroke: white;
   stroke-width: 2;
 }
 
-/* Arrows with marker-end (for all but the last) */
 body.linkedlist .ll-pointer-arrow line.use-arrowhead {
   marker-end: url(#arrowhead);
 }
 
-/* Dashed line for nullptr (no arrowhead) */
 body.linkedlist .ll-pointer-arrow line.nullptr {
   stroke-dasharray: 4 2;
 }
 
-/* Circle marker at end of nullptr pointer */
 body.linkedlist .ll-pointer-arrow circle {
   fill: white;
 }
 
-/* Optional: prevent layout overflow */
 body.linkedlist .ll-pointer-arrow,
 body.linkedlist .ll-pointer-arrow svg {
   max-width: 100%;
@@ -264,12 +245,10 @@ body.linkedlist #toggle-btn {
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-/* Ensure consistent vertical spacing in controls panel */
 body.linkedlist #controls-panel button {
   width: 100%;
 }
 
-/* Optional: remove margin on last child to avoid extra space */
 body.linkedlist #controls-panel button:last-child,
 body.linkedlist #controls-panel form:last-child {
 }
