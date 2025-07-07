@@ -281,11 +281,14 @@ public:
   void remove(K key) {
     TreeNode<K, V>* z = root;
     while (z) {
+      // If the key is less than the key of the root, move to the left child.
       if (key < z->key) z = z->left;
+      // If the key is greater than the key of the root, move to the right child.
       else if (key > z->key) z = z->right;
+      // Otherwise, the key must not exist, and we break.
       else break;
     }
-    if (!z) return;
+    if (!z) return; // Exit if the root does not exist
 
     TreeNode<K, V>* y = z;
     TreeNode<K, V>* x = nullptr;
@@ -304,14 +307,15 @@ public:
       y = minimum(z->right);
       yOriginalColor = y->color;
       x = y->right;
+
       if (y->parent == z) {
-        if (x) x->parent = y;
         xParent = y;
+        if (x) x->parent = y;
       } else {
         transplant(y, y->right);
-        y->left = z->left;
-        if (y->left) y->left->parent = y;
-        y->color = z->color;
+        xParent = y->parent;
+        y->right = z->right;
+        if (y->right) y->right->parent = y;
       }
 
       transplant(z, y);
@@ -323,7 +327,10 @@ public:
     delete z;
     treeSize--;
 
-    if (yOriginalColor == Color::BLACK)
+    if (!x && y != z)
+      xParent = y->parent;
+
+    if (yOriginalColor == Color::BLACK && xParent)
       fixRemove(x, xParent);
   }
 
