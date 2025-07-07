@@ -2,6 +2,9 @@
 
 An interactive web-interface tool to visualize and explore fundamental data structures in real time. Built for students, educators, and anyone interested in learning how data structures work under the hood.
 
+## Demo Video
+[![Demo Video](https://img.youtube.com/vi/WjJJbwVkH_U/0.jpg)](https://youtu.be/WjJJbwVkH_U) 
+
 ## What This Tool Does
 
 This tool provides visualizations for:
